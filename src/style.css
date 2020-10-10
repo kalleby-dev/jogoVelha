@@ -1,0 +1,51 @@
+:root{
+    font-size: 30px;
+    --color-dark: #073b4c;
+    --color-light: #118ab2;
+    --color-primay: #06d6a0;
+    --color-second: #ef476f;
+    --color-third: #ffd166;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.interface{
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.game {
+    width: 20rem;
+	height: 20rem;
+
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+
+    color: var(--color-dark);
+    border-radius: 10px;
+    border: .2rem solid var(--color-dark);
+    background-color: var(--color-primay);
+}
+
+.game > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 4em;
+    border: .2rem solid var(--color-dark);
+
+}
+
+@media only screen and (max-width: 600px) {
+    :root{
+        font-size: 16px;
+    }
+}
