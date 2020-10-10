@@ -1,10 +1,10 @@
-//Game
 const game = {
     label: null,
     container: null,
     board: Array(9),
     gameover: false,
 
+    //Player system
     simbols: {
         options: ['O', 'X'],
         turn_index: 0,
@@ -13,6 +13,8 @@ const game = {
             return this.options[this.turn_index];
         }
     },
+
+    //Define posibles winner sequences
     winComb: [
         [0,1,2], [3,4,5], [6,7,8], //Line
         [0,3,6], [1,4,7], [2,5,8], //Column
@@ -20,29 +22,36 @@ const game = {
     ],
     
 
+    //Get default HTML elements
     init: function(container_element, state_label){
         this.container = container_element;
         this.label = state_label;
     },
     
-    //Game reset
+    
+    //Start a new game
     start: function(){
         this.board.fill('');
         this.gameover = false;
         this.draw();
     },
 
-    display: function(text){
-        this.label.innerText = text;
-    },
 
+    //Set a winner and ends the game
     endGame: function(simbol){
         this.gameover = true
         this.display(`Winner: '${simbol}'!!`);
         console.log(`Winner: '${simbol}'!!`);
     },
 
-    //Draw a board array into screen container
+
+    //Print a text on the screen
+    display: function(text){
+        this.label.innerText = text;
+    },
+
+
+    //Draw the board array into screen container
     draw: function (){
         let content = document.createElement("div");
 
@@ -57,6 +66,8 @@ const game = {
         this.container.innerHTML = content.innerHTML;
     },
 
+
+    //Uses the winnwer sequence list to checks if are winners
     checkWinner: function(simbol){
         for(i in this.winComb){
            if ( this.board[ this.winComb[i][0]] == simbol &&
@@ -69,6 +80,8 @@ const game = {
         }
     },
 
+
+    //Do a player move in game
     makePlay: function(pos){
         if(this.gameover) return;
         if(this.board[pos] != '') return;
