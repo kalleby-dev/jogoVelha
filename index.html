@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da velha</title>
-    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -12,11 +12,8 @@
         <div class="game">
         </div>
         <div class="hud">
-            <div class="score"></div>
             <div class="state"></div>
-            <div class="option">
-                <button onclick="game.start()">Reset</button>
-            </div>
+            <button class="option" onclick="game.start()">Reset</button>
         </div>
     </div>
 
@@ -26,9 +23,8 @@
     <script>
         window.onload = function(){
             let container = document.querySelector(".game");
-            let score = document.querySelector(".score");
             let state = document.querySelector(".state");
-            game.init(container, score, state);
+            game.init(container, state);
             game.start();
         };
     </script>

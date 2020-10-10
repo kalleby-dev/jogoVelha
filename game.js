@@ -47,7 +47,7 @@ const game = {
 
     //Print a text on the screen
     display: function(text){
-        this.label.innerText = text;
+        this.label.innerHTML = text;
     },
 
 
