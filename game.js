@@ -3,7 +3,8 @@ const game = {
     container: null,
     board: Array(9),
     gameover: false,
-
+    
+    mysimbol: 'X',
 
     canplay: false,
     sock: null,
@@ -18,12 +19,12 @@ const game = {
         }
     },
 
-    //Define posibles winner sequences
+/*     //Define posibles winner sequences
     winComb: [
         [0,1,2], [3,4,5], [6,7,8], //Line
         [0,3,6], [1,4,7], [2,5,8], //Column
         [0,4,8], [2,4,6] //Diagonal
-    ],
+    ], */
     
 
     //Get default HTML elements
@@ -43,12 +44,42 @@ const game = {
 
 
     //Set a winner and ends the game
-    endGame: function(simbol){
-        this.gameover = true
-        this.display(`Winner: '${simbol}'!!`);
-        console.log(`Winner: '${simbol}'!!`);
+    endgame: function(data){
+        this.gameover = true;
+        this.board = data["board"];
+        this.draw();
+        if(this.mysimbol == data["winner"]){
+            this.display("You win!!!");
+        }else{
+            this.display("You lose :(");
+        }
     },
 
+    turn: function(data){
+        this.board = data["board"];
+        this.draw();
+
+        if(this.gameover) return;
+
+        if(data["turn"] == this.mysimbol){
+            this.canplay = true;
+            this.display("Your turn");
+        }
+        console.log(data);
+    },
+
+    endturn: function(){
+        let data = {}
+        data["player"] = this.sock.id
+        data["board"] = this.board
+
+        this.sock.emit('endturn', data)
+
+        this.canplay = false;
+        this.display("Oponent turn");
+    
+        this.draw();
+    },
 
     //Print a text on the screen
     display: function(text){
@@ -73,7 +104,7 @@ const game = {
 
 
     //Uses the winnwer sequence list to checks if are winners
-    checkWinner: function(simbol){
+/*     checkWinner: function(simbol){
         for(i in this.winComb){
            if ( this.board[ this.winComb[i][0]] == simbol &&
                 this.board[ this.winComb[i][1]] == simbol &&
@@ -83,27 +114,18 @@ const game = {
                 return true;
            }
         }
-    },
+    }, */
 
 
     //Do a player move in game
     makePlay: function(pos){
         if(this.canplay == false) return;
 
-        if(this.gameover) return;
+/*         if(this.gameover) return; */
         if(this.board[pos] != '') return;
-        
-        let simbol = this.simbols.options[ this.simbols.turn_index];
-        this.board[pos] = simbol;
-        this.draw();
+        this.board[pos] = this.mysimbol;
 
-        if(this.checkWinner(simbol)) return;
-
-        simbol = this.simbols.change();
-        this.display(`${simbol} - player turn`);
-
-        this.canplay = false;
-        this.sock.emit('play', {"player": this.sock.id, "state":"finished", "board": this.board})
+        this.endturn();
     }
 
 

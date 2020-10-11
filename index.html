@@ -34,22 +34,18 @@
             console.log(data)
         });
 
-        socket.on('canplay', function(json){
-            game.canplay = json["value"];
+        socket.on('gameover', function(data){
+            game.endgame(data);
         });
 
-        socket.on('play', function(json){
-            //game.display(json)
-            game.board = json["board"];
-            game.draw();
-
-            if(json["state"] == "finished"){
-                game.canplay = true;
-            }
-
-            
-            
+        socket.on('canplay', function(data){
+            game.canplay = data["value"];
+            game.mysimbol = 'O';
         });
+
+        socket.on('turn', function(data){
+            game.turn(data);
+        })
 
         //Game
         window.onload = function(){
