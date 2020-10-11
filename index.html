@@ -17,17 +17,49 @@
         </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="game.js"></script>
 
 
     <script>
+        //Connection
+        const socket = io();
+
+        socket.on('connect', function(){
+            console.log(socket.id)
+            socket.emit('msg', "Client: "+socket.id)
+        });
         
+        socket.on('msg', function(data){
+            console.log(data)
+        });
+
+        socket.on('canplay', function(json){
+            game.canplay = json["value"];
+        });
+
+        socket.on('play', function(json){
+            //game.display(json)
+            game.board = json["board"];
+            game.draw();
+
+            if(json["state"] == "finished"){
+                game.canplay = true;
+            }
+
+            
+            
+        });
+
+        //Game
         window.onload = function(){
             let container = document.querySelector(".game");
             let state = document.querySelector(".state");
-            game.init(container, state);
+            game.init(container, state, socket);
             game.start();
         };
     </script>
+
+
 </body>
 </html>

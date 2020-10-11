@@ -4,6 +4,10 @@ const game = {
     board: Array(9),
     gameover: false,
 
+
+    canplay: false,
+    sock: null,
+
     //Player system
     simbols: {
         options: ['O', 'X'],
@@ -23,9 +27,10 @@ const game = {
     
 
     //Get default HTML elements
-    init: function(container_element, state_label){
+    init: function(container_element, state_label, client_sock){
         this.container = container_element;
         this.label = state_label;
+        this.sock = client_sock;
     },
     
     
@@ -83,6 +88,8 @@ const game = {
 
     //Do a player move in game
     makePlay: function(pos){
+        if(this.canplay == false) return;
+
         if(this.gameover) return;
         if(this.board[pos] != '') return;
         
@@ -94,6 +101,9 @@ const game = {
 
         simbol = this.simbols.change();
         this.display(`${simbol} - player turn`);
+
+        this.canplay = false;
+        this.sock.emit('play', {"player": this.sock.id, "state":"finished", "board": this.board})
     }
 
 
